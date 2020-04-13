@@ -65,3 +65,8 @@ MESSAGE1: db 'RYAN64 OS Boot Loader Start!', 0
 ;마지막은 0으로 설정하여, .MESSAGELOOP 에서 처리할 수 있게 함.
 
 ```  
+
+
+### 실행
+<img src="./img/4.3.4 terminal.png" title="4.3.4 terminal"></img><br/>
+<img src="./img/4.3.4 qemu.png" title="4.3.4 qemu"></img><br/>
