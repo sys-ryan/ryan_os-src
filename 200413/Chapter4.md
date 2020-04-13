@@ -3,7 +3,7 @@
 ### 최상위 디렉터리의 makefile  (/ryan/makefile)
 OS 이미지 생성을 위해 각 하위 디렉터리의 makefile을 실행하는 것. 
 clean Target : 빌드 과정에서 생성된 파일을 삭제할 목적으로 정의 
-                하위 디레겉리에 clean Target을 실행하여 처리하는 구조 
+                하위 디렉터리에 clean Target을 실행하여 처리하는 구조 
                 
 
 ### /00.BootLoader/makefile 
