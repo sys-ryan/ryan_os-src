@@ -175,6 +175,7 @@ PRINTMESSAGE:
 ;Data AREA
 MESSAGE1: db 'RYAN64 OS Boot Loader Start!!', 0
 DISKERRORMESSAGE: db 'OS Image Loading...', 0
+IMAGELOADINGMESSAGE: db 'OS Image Loading...', 0
 LOADINGCOMPLETEMESSAGE: db 'Complete!!!', 0
 
 ;디스크 읽기에 관련된 변수들
