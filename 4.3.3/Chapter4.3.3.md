@@ -12,4 +12,4 @@ mov byte [0x01], 0x4A
 
 # 실행 결과
 빌드 후 QEMU를 실행하면 빨간 배경에 밝은 녹색으로 출력된 'M'을 볼 수 있다.
-<img src="./img/4.3.3 qemu exe" title="4.3.3 qeum exe"></img><br/>
+<img src="./img/4.3.3 qemu exe.png" title="4.3.3 qeum exe"></img><br/>
