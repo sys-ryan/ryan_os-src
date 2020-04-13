@@ -15,6 +15,7 @@ BootLoader.asm파일을 nasm 어셈블리어 컴파일러로 빌드하여 BootLo
 
 
 빌드가 정상적으로 끝나면 OS의 최상위 디렉터리에 Disk.img 파일이 생성됨 
+![Alt text](/img/make.png)
 <img src="/img/make.png" title="make"></img><br/>
 
 
