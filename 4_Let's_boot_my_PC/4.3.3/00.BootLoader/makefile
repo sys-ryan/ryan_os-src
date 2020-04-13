@@ -3,5 +3,5 @@ all: BootLoader.bin
 BootLoader.bin: BootLoader.asm
 	nasm -o BootLoader.bin BootLoader.asm
 
-claen:
+clean:
 	rm -f BootLoader.bin
