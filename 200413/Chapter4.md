@@ -1,4 +1,4 @@
-#4 내 PC를 부팅하자 
+# 4 내 PC를 부팅하자 
 
 ### 최상위 디렉터리의 makefile  (/ryan/makefile)
 OS 이미지 생성을 위해 각 하위 디렉터리의 makefile을 실행하는 것. 
