@@ -42,7 +42,7 @@ START:
   push IMAGELOADINGMESSAGE
   push 1
   push 0
-  call PRINTEMSSAGE
+  call PRINTMESSAGE
   add sp, 6
 
 
@@ -66,7 +66,7 @@ RESETDISK:
 READDATA:
   ;모든 섹터를 다 읽었는지 확인
   cmp di, 0
-  je REAEND
+  je READEND
   sub di, 0x1
 
   ;Call BIOS Read Function
