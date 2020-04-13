@@ -57,7 +57,7 @@ RESETDISK:
 
 
   ;디스크 내용을 메모리로 복사할 어드레스(ES:BX)를 0x10000으로 설정
-  mov si, 0x10000
+  mov si, 0x1000
   mov es, si
   mov bx, 0x0000
 
@@ -93,7 +93,7 @@ READDATA:
   mov byte [SECTORNUMBER], 0x01     ; 섹터 번호 다시 1로 설정
 
   ;만약 헤드가 1->0 으로 바뀌었으면 양쪽 헤드 모두 읽은것 -> 트랙 번호 1 증가
-  cmp byte [HEADNUMBER], 0x0000
+  cmp byte [HEADNUMBER], 0x00
   jne READDATA                      ;헤드 번호 1 아니면 READDATA로 이동
 
   ;트랙 1 증가시킨 후 다시 섹터 읽기로 이동
@@ -151,7 +151,7 @@ PRINTMESSAGE:
   mov si, word [bp+8]
 
 .MESSAGELOOP:
-  mov cl, byte [si+MESSAGE1]
+  mov cl, byte [si]
   cmp cl, 0
   je .MESSAGEEND
 
