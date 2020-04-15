@@ -226,3 +226,7 @@ PRINTMESSAGE:
 
 ### 실행
 <img src="./img/qemu_5.png" title="4.3.4 qemu"></img><br/>
+
+
+정상 실행 결과는 아님..  
+숫자가 왜 나오나 마는지 알 수 X
