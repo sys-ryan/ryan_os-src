@@ -1,4 +1,4 @@
-all: BootLoader Disk.img
+all: BootLoader Kernel32 Disk.img
 
 BootLoader:
 	@echo
@@ -17,7 +17,7 @@ Kernel32:
 	@echo
 
 	make -C 01.Kernel32
-	
+
 	@echo
 	@echo === Build Complete ===
 	@echo
