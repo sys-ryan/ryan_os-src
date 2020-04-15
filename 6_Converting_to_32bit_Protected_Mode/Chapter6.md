@@ -250,3 +250,8 @@ Disk.img: 00.BootLoader/BootLoader.bin 01.Kernel32/Kernel32.bin
 
 `$^`: Dependency(:의 오른쪽)에 나열된 전체 파일을 의미.  
 두 가지 파일을 합쳐서 디스크 이미지를 생성.
+
+
+
+### 실행
+<img src="./img/qemu_6.png" title="4.3.4 qemu"></img><br/>
