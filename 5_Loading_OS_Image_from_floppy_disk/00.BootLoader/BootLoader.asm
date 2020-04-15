@@ -71,10 +71,11 @@ READDATA:
 
   ;Call BIOS Read Function
   mov ah, 0x02                ;BIOS 서비스 번호 2(Read Sector)
-  mov al, 01
+  mov al, 0x1
   mov ch, byte [TRACKNUMBER]
   mov cl, byte [SECTORNUMBER]
   mov dh, byte [HEADNUMBER]
+  mov dl 0x00
   int 0x13
   jc HANDLEDISKERROR
 

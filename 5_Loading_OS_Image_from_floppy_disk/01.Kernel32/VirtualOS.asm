@@ -3,7 +3,7 @@
 
 SECTION .text
 
-jmp 0x1000:START
+jmp 0x1000:START    ;CS 세그먼트 레지스터에 0x1000을 복사하면서, START 레이블로 이동
 
 SECTORCOUNT: dw 0x0000
 TOTALSECTORCOUNT equ 1024
@@ -36,5 +36,5 @@ START:
       jmp (0x1000 + i * 0x20): 0x0000 ;다음 섹터 오프셋으로 이동
     %endif
 
-    times(512 - ($ - $$) % 512) db 0x00
+    times (512 - ($ - $$) % 512) db 0x00
   %endrep
