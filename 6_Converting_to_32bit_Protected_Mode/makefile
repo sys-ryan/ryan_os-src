@@ -11,12 +11,12 @@ BootLoader:
 	@echo === Build Complete ===
 	@echo
 
-Disk.img: 00.BootLoader/BootLoader.bin
+Disk.img: 00.BootLoader/BootLoader.bin 01.Kernel32/Kernel32.bin
 	@echo
 	@echo === Disk Image Build Start ===
 	@echo
 
-	cp 00.BootLoader/BootLoader.bin Disk.img
+	cat $^ > Disk.img
 
 	@echo
 	@echo === All Build Complete ===
