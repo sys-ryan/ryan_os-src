@@ -163,4 +163,4 @@ COBJECTFILES = $(patsubst %.c, %.o, $(CSOURCEFIELS))
 
 ### 실행
 
-<img src="./img/qemu_6.png" title="reset_read_registers"></img><br/>
+<img src="./img/qemu_7.png" title="qemu_6_result"></img><br/>
