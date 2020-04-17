@@ -4,7 +4,7 @@ GCC32 = gcc -c -m32 -ffreestanding
 LD32 = ld -melf_i386 -T ../elf_i386.x -nostdlib -e Main -Ttext 0x10200
 
 #dfine OBJETCOPY Option for generating binary file image`
-OBJCOPY32 = ojbcopy -j .text -j .data -j .rodata -j .bss -S -O binary
+OBJCOPY32 = objcopy -j .text -j .data -j .rodata -j .bss -S -O binary
 
 #Define directory
 OBJECTDIRECTORY = Temp
