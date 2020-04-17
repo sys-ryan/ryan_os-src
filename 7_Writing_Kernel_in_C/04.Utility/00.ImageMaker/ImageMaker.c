@@ -40,7 +40,7 @@ int main(int argc, char* argv[]){
     exit(-1);
   }
 
-  iSourceSize = CopyFile(iSOurceFd, iTargetFd);
+  iSourceSize = CopyFile(iSourceFd, iTargetFd);
   close(iSourceFd);
 
   //fill the remaining part with 0x00 to make the file size adjust to 512 byte which is the sector size.
