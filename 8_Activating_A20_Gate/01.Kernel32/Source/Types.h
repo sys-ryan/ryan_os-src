@@ -8,7 +8,7 @@
 #define BOOL  unsigned char
 
 #define TRUE 1
-#define FLASE 0
+#define FALSE 0
 #define NULL 0
 
 #pragma pack(push, 1)
