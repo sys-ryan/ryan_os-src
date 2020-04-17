@@ -40,7 +40,7 @@ BOOL kInitializeKernel64Area(void){
     //0으로 저장한 후 다시 읽었을 때 0이 나오지 않으면 해당 어드레스를
     //사용하는데 문제가 생긴 것이므로 더이상 진행하지 않고 종료
     if(*pdwCurrentAddress != 0){
-      return false;
+      return FALSE;
     }
 
     //다음 어드레스로 이동
