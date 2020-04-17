@@ -26,8 +26,8 @@ void Main(void){
     kPrintString(45, 5, "Fail]");
     kPrintString(0, 6, "Kernel Area Initialization Fail!");
     while(1);
-
   }
+  kPrintString(45, 5, "Pass");
 
   while(1);
 }
