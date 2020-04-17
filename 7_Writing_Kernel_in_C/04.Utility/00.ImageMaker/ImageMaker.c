@@ -28,14 +28,14 @@ int main(int argc, char* argv[]){
   }
 
   //Create Disk.img file
-  if((iTargetFd = open("Disk.img", O_RDWR | O_CREAT| OTRUNC, 0664)) == -1){
+  if((iTargetFd = open("Disk.img", O_RDWR | O_CREAT| O_TRUNC, 0664)) == -1){
     fprintf(stderr, "[ERROR] Disk.img open fail.\n");
     exit(-1);
   }
 
   //open boot loader file and copy all of the contents to disk image file
   printf("[INFO] Copy boot loader to image file\n");
-  if((iSOurceFd = open(argv[1], O_RDONLY)) == -1){
+  if((iSourceFd = open(argv[1], O_RDONLY)) == -1){
     fprintf(stderr, "[ERROR] %s open fail\n", argv[1]);
     exit(-1);
   }
