@@ -73,4 +73,4 @@ BOOL kInitializeKernel64Area(void){
 ### 빌드와 실행
 정상적으로 초기화가 수행되었다는 'IA-32e Kernel Area Initialization Complete' 메시지 확인  
 
-<img src="./img/.jpeg" title="IA-32e Kernel Area Initialization"></img><br/>
+<img src="./img/qemu_8-1.png" title="IA-32e Kernel Area Initialization"></img><br/>
