@@ -9,6 +9,26 @@ START:
   mov ds, ax
   mov es, ax
 
+
+
+  ;Activate A20 gate
+  ;If conversion through BIOS fails, the system tries to use system control port.
+
+  ;Activate A20 gate through BIOS service
+  mov ax, 0x2401
+  int 0x15
+
+  jc .A20GATEERROR
+  jmp .A20GATESUCCESS
+
+.A20GATEERROR:
+  ;if error occurs, the system tries to use system control port
+  in al, 0x92
+  or al, 0x02
+  and al, 0xFE
+  out 0x92, al
+
+.A20GATESUCCESS:
   cli ;interrupt off
   lgdt [GDTR]
 
