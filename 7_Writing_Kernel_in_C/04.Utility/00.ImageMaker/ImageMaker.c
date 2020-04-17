@@ -51,7 +51,7 @@ int main(int argc, char* argv[]){
   //Open 32bit Kernel file and copy all of the contents to Disk image file
   printf("[INFO] Copy protected mode kernel to image file\n");
   if((iSourceFd = open(argv[2], O_RDONLY)) == -1){
-    fprintf(stderr, "[ERROR] %s open fail\n", arge[2]);
+    fprintf(stderr, "[ERROR] %s open fail\n", argv[2]);
     exit(-1);
   }
 
@@ -66,7 +66,7 @@ int main(int argc, char* argv[]){
   //Update Kernel information to disk image
   printf("[INFO] Start to write kernel information\n");
   WriteKernelInformation(iTargetFd, iKernel32SectorCount);
-  printf("[INFO] Image file create complete\n")l;
+  printf("[INFO] Image file create complete\n");
 
   close(iTargetFd);
   return 0;
