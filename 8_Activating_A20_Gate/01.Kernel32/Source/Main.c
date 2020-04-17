@@ -2,6 +2,7 @@
 
 void kPrintString(int iX, int iY, const char* pcString);
 BOOL kInitializeKernel64Area(void);
+BOOL kIsMemoryEnough(void);
 
 void Main(void){
   DWORD i;
@@ -75,7 +76,7 @@ BOOL kIsMemoryEnough(void){
   pdwCurrentAddress = (DWORD*) 0x100000;
 
   //check through loop until 0x4000000(64MB)
-  while((DWORD) pdwCUrrentAddress < 0x4000000){
+  while((DWORD) pdwCurrentAddress < 0x4000000){
     *pdwCurrentAddress = 0x12345678;
 
     //If the result of reading is not 0x12345678 after storing 0x12345678,
@@ -84,7 +85,7 @@ BOOL kIsMemoryEnough(void){
       return FALSE;
     }
     //Move 1MB at a time to check
-    dpwCurrentAddress += (0x100000 / 4);
+    pdwCurrentAddress += (0x100000 / 4);
   }
   return TRUE;
 }
