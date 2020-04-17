@@ -58,6 +58,8 @@ int main(int argc, char* argv[]){
   iSourceSize = CopyFile(iSourceFd, iTargetFd);
   close(iSourceFd);
 
+
+
   //fill the remaining part with 0x00 to make the file size adjust to 512 byte which is the sector size.
   iKernel32SectorCount = AdjustInSectorSize(iTargetFd, iSourceSize);
   printf("[INFO] %s size = [%d] and sector count = [%d]\n",
@@ -104,7 +106,7 @@ void WriteKernelInformation(int iTargetFd, int iKernelSectorCount){
   long lPosition;
 
   //Location 5 bytes away from the beginning of the file represents the total sector count of the kernel.
-  lPosition = lseek(iTargetFd, (off_t)6, SEEK_SET);
+  lPosition = lseek(iTargetFd, (off_t)5, SEEK_SET);
   if(lPosition == -1){
     fprintf(stderr, "lseek fail. Return value = %d, errno = %d, %d\n",
               lPosition, errno, SEEK_SET);
