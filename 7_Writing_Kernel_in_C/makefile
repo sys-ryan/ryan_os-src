@@ -22,7 +22,7 @@ Kernel32:
 	@echo === Build Complete ===
 	@echo
 
-Utilty:
+Utility:
 	@echo
 	@echo === Utility Build Start ===
 	@echo
