@@ -39,7 +39,9 @@ PROTECTEDMODE:
   call PRINTMESSAGE
   add esp, 12
 
-  jmp $
+  jmp dword 0x08: 0x10200
+  ;CS 세그먼트 셀렉터를 커널 코드 디스크립터(0x08)로 변경하면서
+  ;0x10200 어드레스(C언어 커널이 있는 어드레스)로 이동
 
 
 PRINTMESSAGE:
