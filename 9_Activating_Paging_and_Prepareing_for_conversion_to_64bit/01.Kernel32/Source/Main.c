@@ -31,7 +31,7 @@ void Main(void){
   kPrintString(45, 5, "Pass");
 
   //create page table for IA-32e mode kernel
-  kPrintString(0, 6, "IA-32e Page Tables Initialize..............[    ]");
+  kPrintString(0, 6, "IA-32e Page Tables Initialize...............[    ]");
   kInitializePageTables();
   kPrintString(45, 6, "Pass");
 
