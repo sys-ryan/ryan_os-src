@@ -127,23 +127,23 @@ GDT:
     db 0x00
     db 0x00
 
-	;Code segment descriptor for IA-32e mode kernel
-	IA-32eCODEDESCRIPTOR:
-		dw 0xFFFF
-		dw 0x0000
-		db 0x00
-		db 0x9A
-		db 0xAF
-		db 0x00
+  ;Code segment descriptor for IA-32e mode kernel
+  IA-32eCODEDESCRIPTOR:
+    dw 0xFFFF
+    dw 0x0000
+    db 0x00
+    db 0x9A
+    db 0xAF
+    db 0x00
 
-	;Data segment descriptor for IA-32e mode kernel
-	IA_32eDATADESCRIPTOR:
-		dw 0xFFFF
-		dw 0x0000
-		db 0x00
-		db 0x92
-		db 0xAF
-		db 0x00
+  ;Data segment descriptor for IA-32e mode kernel
+  IA_32eDATADESCRIPTOR:
+    dw 0xFFFF
+    dw 0x0000
+    db 0x00
+    db 0x92
+    db 0xAF
+    db 0x00
 
   ;code segment descriptor for PROTECTED mode kernel
   CODEDESCRIPTOR:
@@ -154,7 +154,7 @@ GDT:
     db 0xCF
     db 0x00
 
-  ;data segment descriptor for PROTECTED mode kernel 
+  ;data segment descriptor for PROTECTED mode kernel
   DATADESCRIPTOR:
     dw 0xFFFF
     dw 0x0000
