@@ -128,7 +128,7 @@ GDT:
     db 0x00
 
   ;Code segment descriptor for IA-32e mode kernel
-  IA-32eCODEDESCRIPTOR:
+  IA_32eCODEDESCRIPTOR:
     dw 0xFFFF
     dw 0x0000
     db 0x00
