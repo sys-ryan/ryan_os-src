@@ -66,7 +66,7 @@ ASSEMBLYOBEJCTFIELS = $(notdir $(patsubst %.asm, %.o, $(ASSEMBLYSOURCEFILES)))
 	$(GCC32) -c $<
 
 #define a rules for converting .asm file to .o
-%.o: ../SOURCEDIRECTORY/%.asm
+%.o: ../$(SOURCEDIRECTORY)/%.asm
 	$(NASM32) -f elf32 -o $@ $<
 
 #Create a file regarding the dependency.
