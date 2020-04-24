@@ -36,12 +36,12 @@ START:
   mov eax, 0x4000003B
   mov cr0, eax ;cr0 <- flag
 
-  jmp dword 0x08: (PROTECTEDMODE - $$ + 0x10000)
+  jmp dword 0x18: (PROTECTEDMODE - $$ + 0x10000)
 
 
 [BITS 32]
 PROTECTEDMODE:
-  mov ax, 0x10
+  mov ax, 0x20
   mov ds, ax
   mov es, ax
   mov fs, ax
@@ -59,7 +59,7 @@ PROTECTEDMODE:
   call PRINTMESSAGE
   add esp, 12
 
-  jmp dword 0x08: 0x10200
+  jmp dword 0x18: 0x10200
   ;CS 세그먼트 셀렉터를 커널 코드 디스크립터(0x08)로 변경하면서
   ;0x10200 어드레스(C언어 커널이 있는 어드레스)로 이동
 
@@ -127,7 +127,25 @@ GDT:
     db 0x00
     db 0x00
 
-  ;code segment descriptor
+	;Code segment descriptor for IA-32e mode kernel
+	IA-32eCODEDESCRIPTOR:
+		dw 0xFFFF
+		dw 0x0000
+		db 0x00
+		db 0x9A
+		db 0xAF
+		db 0x00
+
+	;Data segment descriptor for IA-32e mode kernel
+	IA_32eDATADESCRIPTOR:
+		dw 0xFFFF
+		dw 0x0000
+		db 0x00
+		db 0x92
+		db 0xAF
+		db 0x00
+
+  ;code segment descriptor for PROTECTED mode kernel
   CODEDESCRIPTOR:
     dw 0xFFFF
     dw 0x0000
@@ -136,7 +154,7 @@ GDT:
     db 0xCF
     db 0x00
 
-  ;data segment descriptor
+  ;data segment descriptor for PROTECTED mode kernel 
   DATADESCRIPTOR:
     dw 0xFFFF
     dw 0x0000

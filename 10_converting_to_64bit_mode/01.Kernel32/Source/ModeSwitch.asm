@@ -74,5 +74,5 @@ kSwitchAndExecute64bitKernel:
 
 	jmp 0x08:0x200000
 
-	;not executed 
+	;not executed
 	jmp $
