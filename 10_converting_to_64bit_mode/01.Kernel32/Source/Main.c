@@ -11,7 +11,7 @@ void Main(void){
 	DWORD dwEAX, dwEBX, dwECX, dwEDX;
 	char vcVendorString[13] = {0, };
 
-  kPrintString(0, 3, "C Language Kernel Started.....................[PASS]");
+  kPrintString(0, 3, "C Language Kernel Started...................[PASS]");
 
   //Check if the minimum memory size is met
   kPrintString(0, 4, "Minimum Memory Size Check...................[    ]");
