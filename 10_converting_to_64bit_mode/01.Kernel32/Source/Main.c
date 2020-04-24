@@ -42,18 +42,19 @@ void Main(void){
 	kReadCPUID(0x00, &dwEAX, &dwEBX, &dwECX, &dwEDX);
 	*(DWORD*) vcVendorString = dwEBX;
 	*((DWORD*) vcVendorString + 1) = dwEDX;
-	*((DWORD*) vcVendorString + 2) = dwECX
+	*((DWORD*) vcVendorString + 2) = dwECX;
 	kPrintString(0, 7, "Processor Vendor String.....................[          ]");
 	kPrintString(45, 7, vcVendorString);
 
 	//confirm 64bit support
-	kReadCPUID(0x80000001, &dwEAX, &dwEBX, &dwECX, dw&EDX);
+	kReadCPUID(0x80000001, &dwEAX, &dwEBX, &dwECX, &dwEDX);
 	kPrintString(0, 8, "64bit Mode Support Check....................[    ]");
 	if(dwEDX & (1 << 29)){
 		kPrintString(45, 8, "Pass");
 	}else{
 		kPrintString(0, 9, "This Processor does not support 64bit mode!!");
-		whiel(1)
+
+		whiel(1);
 	}
 
   while(1);
