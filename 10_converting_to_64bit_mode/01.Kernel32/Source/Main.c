@@ -52,10 +52,14 @@ void Main(void){
 	if(dwEDX & (1 << 29)){
 		kPrintString(45, 8, "Pass");
 	}else{
+		kPrintString(45, 8, "Fail");
 		kPrintString(0, 9, "This Processor does not support 64bit mode!!");
 
 		while(1);
 	}
+
+	//Converto to IA-32e mode
+	kPrintString(0, 9, "Switch To IA-32e Mode");
 
   while(1);
 }
