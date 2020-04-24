@@ -2,7 +2,7 @@
 ;export the name to make it possible for C to call it.
 global kReadCPUID, kSwitchAndExecute64bitKernel
 
-SECTION.text
+SECTION .text
 
 ;return CPUID
 ;PARAM: DWORD dwEAX, DWORD* pdwEAX, *PDWEBX, *pdwECX, *pdwEDX
@@ -13,7 +13,7 @@ kReadCPUID:
 	push ebx
 	push ecx
 	push edx
-	push dsi
+	push esi
 
 
 	;execute CPUID via EAX
