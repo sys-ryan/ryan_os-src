@@ -43,7 +43,7 @@ void Main(void){
 	*(DWORD*) vcVendorString = dwEBX;
 	*((DWORD*) vcVendorString + 1) = dwEDX;
 	*((DWORD*) vcVendorString + 2) = dwECX;
-	kPrintString(0, 7, "Processor Vendor String.....................[          ]");
+	kPrintString(0, 7, "Processor Vendor String.....................[            ]");
 	kPrintString(45, 7, vcVendorString);
 
 	//confirm 64bit support
@@ -61,7 +61,7 @@ void Main(void){
 	//Converto to IA-32e mode
 	kPrintString(0, 9, "Switch To IA-32e Mode");
   //kSwitchAndExecute64bitKernel();
-  
+
   while(1);
 }
 
