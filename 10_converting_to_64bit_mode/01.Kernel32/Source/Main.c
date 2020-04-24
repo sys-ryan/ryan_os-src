@@ -54,7 +54,7 @@ void Main(void){
 	}else{
 		kPrintString(0, 9, "This Processor does not support 64bit mode!!");
 
-		whiel(1);
+		while(1);
 	}
 
   while(1);
