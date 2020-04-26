@@ -428,3 +428,190 @@ mov rbp, 0x6FFFF8
 ### 빌드와 실행
 
 <img src="./img/qemu_10_exe.png" title="qemu fail"></img><br/>
+
+
+
+
+
+### 10.4 IA-32e 모드용 커널 준비
+
+
+#### 커널 엔트리 포인트 파일 생성
+이전 코드(C->asm)와는 반대로 어셈블리어 함수에서 C 함수를 호출해야함.  
+이를 위해서는 해당 함수가 외부에 있다는 것을 알려야 함. -> `extern` 지시어 사용  
+Main() 함수를 엔트리 포인트로 사용할 것이므로 엔트리 포인트 파일 상단에  __extern Main__ 과 같이 입력하면 된다.  
+
+02.Kernel64/Source/EntryPoint.s 수정
+- C 언어 엔트리 포인트 파일인 Main() 함수를 call 명령을 통해 호출
+- call 명령어 아래에서 무한 루프(jmp $)를 수행
+
+
+IA-32e 모드 커널의 엔트리 포인트 소스 코드(02.Kernel64/Source/EntryPoint.s)
+```
+[BITS 64]
+
+SECTION .text
+extern Main__
+
+;;Code area
+START
+  mov ax, 0x10  ; data segment descriptor for IA-32e mode kernel
+  mov ds, ax
+  mov fs, ax
+  mov gs, ax
+
+  ;create stack(1MB)
+  mov ss, ax
+  mov rsp, 0x6FFFF8
+  mov rbp, 0x6FFFF8
+
+
+  call Main ; in C
+
+  jmp $
+```
+
+
+#### C언어 엔트리 퐁니트 파일 생성
+C언어 코드는 보호 모드 / IA-32e 모드 간 차이가 크게 없음.
+다만 보호 모드용 C언어 엔트리 포인트 파일은 IA-32e 모드 전환을 위해 여러 함수들을 포함하고 있으므로, `Main()` 함수와 `kPrintString()` 함수만 정리하여 옮김.  
+
+
+IA-32e 모드 커널의 C 언어 엔트리 포인트 파일 소스 코드(02.Kernel64/Source/Main.c)
+```
+#include "Types.h"
+
+void kPrintString(int iX, int iY, const char* pcString);
+void Main(void){
+  kPrintString(0, 10, "Switch To IA-32e Mode Success!");
+  kPrintString(0, 11, "IA-32e C Language Kernel Start..............[Pass]");
+}
+
+void kPrintString(int iX, int iY, const char* pcString){
+  CHARACTER* pstScreen = (CARACTER*) 0xB8000;
+  int i;
+
+  pstScreen += (iY * 80) + iX;
+
+  for(i = 0; pcString[i] != 0; i++){
+    pstScreen[i].bCharactor = pcString[i];
+  }
+}
+```
+
+
+#### 링크 스크립트 파일 생성
+IA-32e 커널 역시 __라이브러리를 사용하지 않도록 빌드__ 해야 함.
+0x200000(2MB) 어드레스로 복사되어 실행될 것이므로, 커널 이미지를 생성할 때 이를 고려해야 함.  
+
+IA-32e 모드용 커널을 빌드해야 하므로 __64비트 이미지__ 에 관련된 elf_x86_64.x 파일을 기반으로 함.  
+- .text, .data, .bss에 관련된 필수 섹션을 앞쪽으로 이동
+- .text 섹션의 시작 어드레스를 0x200000(2MB)로 변경
+- 데이터 섹션의 시작을 섹터 단위로 맞추어 정렬. //디버깅 편리
+
+
+
+#### makefile 생성
+보호 모드 커널과 달리, IA-32e 모드 커널은 커널 엔트리 포인트와 C언어 커널 엔트리 포인트가 개별적으로 빌드되어 합쳐지는 형태가 아님.  
+IA-32e 모드 커널의 커널 엔트리 포인트 파일은 오브젝터 파일의 형태로 컴파일 되어 C 언어 커널과 함께 링크됨.  
+-> C언어 엔트리 포인트 파일이 아니라 커널 엔트리 포인트 파일이 링크 목록의 가장 앞에 위치하도록 수정.
+- 생성되는 이미지의 포맷과 관련된 부분 수정.
+    보호모드 커널 : 32비트 -> -m3 나 -f elf32 와 같이 32비트 관련 옵션 사용
+    IA-32e 모드 : 64비트 -> `-m64`와 `-f elf64` 옵션으로 변경
+
+
+
+
+### 보호 모드 커널과 IA-32e 모드 커널 통합
+- 보호 모드 커널과 IA-32e 모드 커널을 통합하여 하나의 OS 이미지로 통합
+
+#### 최상위 makefile 수정
+IA-32e 모드 커널이 추가 -> 최상의 makefile 수정하여 02.Kernel64 디렉터리에서 make를 수행하도록 변경.  
+- 빌드 목록에 Kernel64 추가
+- Kernel64의 커맨드 목록에 'make -C 02.Kernel64' 추가
+- clean 커맨드 목록에 'make -C 02.Kernel64 clean' 추가
+
+
+
+<현재 문제점>
+- `ImageMaker` 프로그램은 부트 로더 이미지 파일과 보호 모드 커널 이미지 파일, 두 가지만 결합할 수 있음.  
+- IA-32e 모드 커널을 0x200000(2MB) 어드레스의 위치로 복사하려면 IA-32e 모드 커널에 대한 위치 정보 필요  
+
+<해결>
+- ImageMaker 프로그램을 수정하여 IA-32e 모드 커널 파일을 입력으로 받아들이게 하고,  
+커널의 총 섹터 수 외에 __보호 모드 커널의 섹터 수__ 를 추가로 기록하도록 수정
+- 보호 모드 커널은 부트 로더나 보호 모드 이미지에 기록된 정보를 이용하여 IA-32e 모드 커널을 0x200000 영역으로 이동시킴.  
+
+
+#### 부트 로더 파일 수정
+ImageMaker 프로그램 수정 전 먼저 `부트 로더`를 수정하여, 보호 모드 커널의 섹터 수를 위한 공간 할당.   
+부트 로더 영역에는 2바이트 크기의 `TOTALSECTORCOUNT`가 있으며,   
+ImageMaker 프로그램은 이 영역에 부트 로더를 제외한 나머지 영역의 섹터 수를 기록.  
+부트 로더의 __TOTALSECTORCOUNT 영역 이후에 2바이트를 할당__ 하여 보호 모드 커널 섹터 수를 저장하면  
+ImageMaker 프로그램에서 쉽게 찾을 수 있으며 보호 모드 커널에서도 쉽게 접근 가능.  
+
+
+수정된 부트 로더 파일(Bootloader.asm)
+```
+[ORG 0x00]
+[BITS 16]
+
+SECTION .text
+
+jmp 0x07C0:START ; copy 0x07C0 to CS segment register and move to START
+
+;RYAN64 OS related configuration
+TOTALSECTORCOUNT: dw 0x02
+KERNEL32SECTORCOUNT: dw 0x02  ; Total sector coun of protected mode kernel
+
+;;code area
+START:
+... 생략 ...
+```
+
+
+#### 이미지 메이커 프로그램 수정
+ImageMaker 프로그램에서 수정해야 할 부분  
+- 파라미터를 전달받아서 각 함수를 호출하는 main() 함수  
+- 생성된 OS 이미지에 부트 로더를 제외한 총 섹터 수를 기록하는 __WriteKernelInformation() 함수__  
+
+* main()
+1. 명령행을 넘어온 argument 검사 부분
+  기존에는 부트 로더와 보호 모드 커널밖에 없었지만, 지금은 IA-32e 모드 커널까지 추가되었으므로 3개 이상의 인자를 받아들이도록 수정.  
+2. IA-32e 모드 커널 이미지를 OS 파일에 쓰는 부분  
+3. 커널 이미지에 정보를 기록한 __WriteKernelInformation()__ 함수와 이를 호출하는 부분.  
+  총 섹터 수와 보호 모드 커널 섹터 수를 같이 기록해야 하므로, 호출하는 부분은 두 파라미터를 넘겨주도록 수정.  
+
+  부트 로더 이미지에서 보호 모드 커널의 섹터 수 영역은 총 섹터 수 영역의 바로 이후에 위치   
+  -> 총 섹터 수 정보에 이어서 2바이트를 기록하도록 수정.  
+
+
+
+#### 보호 모드 커널의 C 언어 엔트리 포인트 파일 수정
+1. IA-32e 모드 지원 여부 판단  
+2. IA-32e 모드 커널을 0x200000 어드레스로 복사하는 부분   
+3. IA-32e 모드로 전환하는 코드 호출 부분.  
+
+
+#### IA-32e 모드 커널 이미지 복사
+IA-32e 모드 커널 이미지를 0x200000 어드레스로 복사하려면, 먼저 IA-32e 모드 커널의 `시작 어드레스`부터 알아야 함.  
+앞서, 커널 영역의 총 섹터 수(부트 로더를 제외한 나머지 영역의 섹터 수)와 보호 모드 커널의 섹터 수를 저장했음.
+OS 이미지 파일 내에서 IA-32e 모드 커널은 보호 모드 커널의 직후에 위치.  
+부트 로더는 OS 이미지 파일의 내용 그대로 0x10000(64KByte)에 옮겨주므로 이를 통해 IA-32e 모드 커널의 시작 어드레스와 크기를 계산할 수 있음.  
+
+커널 총 섹터 수가 7이고 보호 모드 커널의 섹터수가 4라면,  
+IA_32e 모드 커널의 크기는 3섹터이며, 시작 어드레스는 0x10000에서 4섹터 만큼 떨어진  
+`(0x10000 + 512바이트 * 4)`가 됨.  
+
+
+우리는 이미 ImageMaker 프로그램을 통해 부트 로더의 시작 어드레스에서 5바이트 떨어진 위치에 TOTALSECTORCOUNT가 존재한다는 것을 알고 있음.  
+그리고 2바이트 더 떨어진 영역에 KERNEL32SECTORCOUNT가 위치하므로,  
+실제로 두 값이 위치하는 어드레스는 부트 로더의 시작 어드레스에 각각 `0x5` 및 `0x7`을 더한 `0x7C05`와 `0x7C07`이 됨.
+
+남은 작업은 __시적 어드레스 부터 섹터 수만큼을 0x200000 어드레스에 복사하는 것__  
+IA-32e 모드 커널을 이동시키는 코드 : `kCopyKernel64ImageTo2MB()`
+
+
+#### Main() 함수 수정
+  보호 모드 커널의 C 언어 엔트리 포인트 함수 뛰쪽에 함수 호출 코드를 몇 줄 추가하고, 그 성공 여부를 화면에 표시하기만 하면 됨.
+  
