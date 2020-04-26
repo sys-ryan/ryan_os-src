@@ -4,7 +4,7 @@ GCC64 = gcc -c -m64 -ffreestanding
 LD64 = ld -melf_x86_64 -T ../elf_x86_64.x -nostdlib -e Main -Ttext 0x200000
 OBJCOPY64 = objcopy -j .text -j .data -j .rodata -j .bss -S -O binary
 
-OBJECTDIRECTORY = temp
+OBJECTDIRECTORY = Temp
 SOURCEDIRECTORY = Source
 
 ;build items and build methods
