@@ -139,7 +139,7 @@ void WriteKernelInformation(int iTargetFd, int iTotalKernelSectorCount,
   usData = (unsigned short) iKernel32SectorCount;
   write(iTargetFd, &usData, 2);
 
-  printf("[INFO] Total sector count except boot loader [%d]\n", iKernelSectorCount);
+  printf("[INFO] Total sector count except boot loader [%d]\n", iKernel32SectorCount);
   printf("[INFO] Total sector count of protected mode kernel [%d]\n",
           iKernel32SectorCount)
 }
