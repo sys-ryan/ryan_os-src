@@ -8,7 +8,7 @@ void Main(void){
 }
 
 void kPrintString(int iX, int iY, const char* pcString){
-  CHARACTER* pstScreen = (CARACTER*) 0xB8000;
+  CHARACTER* pstScreen = (CHARACTER*) 0xB8000;
   int i;
 
   pstScreen += (iY * 80) + iX;
