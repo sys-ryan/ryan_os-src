@@ -68,7 +68,7 @@ int main(int argc, char* argv[]){
           argv[2], iSourceSize, iKernel32SectorCount);
 
   //open 64bit kernel and copy all of the contents to the Disk image file.
-  print("[INFO] Copy IA-32e mode kernel to image file\n");
+  printf("[INFO] Copy IA-32e mode kernel to image file\n");
   if((iSourceFd = open(argv[3], O_RDONLY)) == -1){
     fprintf(stderr, "[ERROR] %s open fail\n", argv[3]);
     exit(-1);
@@ -141,7 +141,7 @@ void WriteKernelInformation(int iTargetFd, int iTotalKernelSectorCount,
 
   printf("[INFO] Total sector count except boot loader [%d]\n", iKernel32SectorCount);
   printf("[INFO] Total sector count of protected mode kernel [%d]\n",
-          iKernel32SectorCount)
+          iKernel32SectorCount);
 }
 
 //copy the contents of Source file(Source Fd) to target file(Target FD) and return the size
