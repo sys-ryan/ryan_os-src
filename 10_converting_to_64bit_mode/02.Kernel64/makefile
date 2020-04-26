@@ -1,4 +1,4 @@
-;build configration
+#build configration
 NASM64 = nasm -f elf64
 GCC64 = gcc -c -m64 -ffreestanding
 LD64 = ld -melf_x86_64 -T ../elf_x86_64.x -nostdlib -e Main -Ttext 0x200000
@@ -7,7 +7,7 @@ OBJCOPY64 = objcopy -j .text -j .data -j .rodata -j .bss -S -O binary
 OBJECTDIRECTORY = Temp
 SOURCEDIRECTORY = Source
 
-;build items and build methods
+#build items and build methods
 all: prepare Kernel64.bin
 
 prepare:
@@ -28,27 +28,27 @@ clean:
 	rm -f *.bin
 	rm -f $(OBJECTDIRECTORY)/*.*
 
-;;the section called again by 'make'.  performed based on Temp directory
+##the section called again by 'make'.  performed based on Temp directory
 
-;define assembly entry point source file to build, based on Temp dir
+#define assembly entry point source file to build, based on Temp dir
 ENTRYPOINTSOURCEFILE = ../$(SOURCEDIRECTORY)/EntryPoint.s
 ENTRYPOINTOBJECTFILE = EntryPoint.o
 
-;define C source file to build, based on Temp dir
+#define C source file to build, based on Temp dir
 CSOURCEFILES = $(wildcard ../$(SOURCEDIRECTORY)/*.c)
 ASSEMBLYSOURCEFILES = $(wildcard ../$(SOURCEDIRECTORY)/*.asm)
 COBJECTFILES = $(notdir $(patsubst %.c, %.o, $(CSOURCEFILES)))
 ASSEMBLYOBJECTFILES = $(notdir $(patsubst %.asm, %.o, $(ASSEMBLYSOURCEFILES)))
 
-;build assembly entry point
+#build assembly entry point
 $(ENTRYPOINTOBJECTFILE): $(ENTRYPOINTSOURCEFILE)
 	$(NASM64) -o $@ $<
 
-;.c to .o
+#.c to .o
 %.o: ../$(SOURCEDIRECTORY)/%.c
 	$(GCC64) -c $<
 
-;.asm to .o
+#.asm to .o
 %.o: ../$(SOURCEDIRECTORY)/%.asm
 	$(NASM64) -o $@ $<
 
