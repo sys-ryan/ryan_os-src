@@ -8,7 +8,7 @@ OBJECTDIRECTORY = temp
 SOURCEDIRECTORY = Source
 
 ;build items and build methods
-all: prepare Kernel64.binary
+all: prepare Kernel64.bin
 
 prepare:
 	mkdir -p $(OBJECTDIRECTORY)
