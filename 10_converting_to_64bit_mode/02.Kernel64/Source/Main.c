@@ -1,4 +1,4 @@
-#include "Type.h"
+#include "Types.h"
 
 void kPrintString(int iX, int iY, const char* pcString);
 
