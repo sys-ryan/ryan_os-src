@@ -74,7 +74,8 @@ READDATA:
   mov al, 0x1
   mov ch, byte [TRACKNUMBER]
   mov cl, byte [SECTORNUMBER]
-  mov dh, byte [HEADNUMBER 0x00
+  mov dh, byte [HEADNUMBER]
+  mov dl, 0x00
   int 0x13
   jc HANDLEDISKERROR
 
