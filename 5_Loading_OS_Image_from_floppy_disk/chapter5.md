@@ -230,3 +230,20 @@ PRINTMESSAGE:
 
 정상 실행 결과는 아님..  
 숫자가 왜 나오나 마는지 알 수 X
+
+
+
+
+## 정상 실행
+<img src="./img/qemu-5-2.png" title="4.3.4 qemu"></img><br/>
+
+https://github.com/0peratingSystem/Operating-System/issues/55#issue-599239112
+
+QEMU 1.x 이후 버전부터는 Default floppy 크기가 상이함 (Windows 2.88MB, MAC 1.44MB)  
+따라서 Windows 환경에서는 Bootloader.asm의 섹터 체크하는 부분을 37로 수정해줘야 정상적으로 동작함 (13장)  
+
+```
+cmp al, 37
+jl READDATA 
+```
+//19 대신 37
