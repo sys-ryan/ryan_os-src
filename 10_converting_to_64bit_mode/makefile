@@ -37,18 +37,6 @@ Kernel64:
 	@echo 
 
 	
-# OS 이미지 생성
-Disk.img: 00.BootLoader/BootLoader.bin 01.Kernel32/Kernel32.bin 02.Kernel64/Kernel64.bin
-	@echo 
-	@echo =========== Disk Image Build Start ===========
-	@echo 
-
-	./ImageMaker.exe $^
-
-	@echo 
-	@echo ============= All Build Complete =============
-	@echo 
-	
 # 유틸리티 빌드
 Utility:
 	@echo 
@@ -59,6 +47,19 @@ Utility:
 
 	@echo 
 	@echo =========== Utility Build Complete ===========
+	@echo 
+
+
+# OS 이미지 생성
+Disk.img: 00.BootLoader/BootLoader.bin 01.Kernel32/Kernel32.bin 02.Kernel64/Kernel64.bin
+	@echo 
+	@echo =========== Disk Image Build Start ===========
+	@echo 
+
+	./ImageMaker.exe $^
+
+	@echo 
+	@echo ============= All Build Complete =============
 	@echo 
 	
 	
