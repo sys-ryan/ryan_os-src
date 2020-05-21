@@ -56,13 +56,13 @@ Disk.img: 00.BootLoader/BootLoader.bin 01.Kernel32/Kernel32.bin 02.Kernel64/Kern
 	@echo =========== Disk Image Build Start ===========
 	@echo 
 
-	./ImageMaker.exe $^
+	./04.Utility/00.ImageMaker/ImageMaker $^
 
 	@echo 
 	@echo ============= All Build Complete =============
 	@echo 
 	
-	
+
 # 소스 파일을 제외한 나머지 파일 정리	
 clean:
 	make -C 00.BootLoader clean
