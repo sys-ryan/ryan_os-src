@@ -745,3 +745,9 @@ if( ( iSourceFd = open( argv[ 2 ], O_RDONLY ) ) == -1 )
 
 
 
+
+
+
+## 실행 결과 
+
+<img src="./img/qemu_10_exe_2.png" title="qemu 10 exe 2"></img><br/>
