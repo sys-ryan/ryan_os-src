@@ -1,9 +1,9 @@
 /* Default linker script, for normal executables */
 OUTPUT_FORMAT("elf64-x86-64", "elf64-x86-64",
-	      "elf64-x86-64")
+        "elf64-x86-64")
 OUTPUT_ARCH(i386:x86-64)
 ENTRY(_start)
-SEARCH_DIR("/usr/local/x86_64-pc-linux-gnu/lib64"); SEARCH_DIR("/usr/local/lib64"); SEARCH_DIR("/lib64"); SEARCH_DIR("/usr/lib64"); SEARCH_DIR("/usr/local/x86_64-pc-linux-gnu/lib"); SEARCH_DIR("/usr/local/lib"); SEARCH_DIR("/lib"); SEARCH_DIR("/usr/lib");
+SEARCH_DIR("/usr/cross/x86_64-pc-linux/lib64"); SEARCH_DIR("/usr/cross/x86_64-pc-linux/lib");
 SECTIONS
 {
   /* Read-only sections, merged into text segment: */
@@ -43,7 +43,7 @@ SECTIONS
       pad the .data section.  */
    . = ALIGN(. != 0 ? 64 / 8 : 1);
   }
-/*********************************************************************************/
+/*********************************************************************************/  
   .interp         : { *(.interp) }
   .note.gnu.build-id : { *(.note.gnu.build-id) }
   .hash           : { *(.hash) }
@@ -65,10 +65,10 @@ SECTIONS
   .rela.data.rel.ro   : { *(.rela.data.rel.ro* .rela.gnu.linkonce.d.rel.ro.*) }
   .rel.data       : { *(.rel.data .rel.data.* .rel.gnu.linkonce.d.*) }
   .rela.data      : { *(.rela.data .rela.data.* .rela.gnu.linkonce.d.*) }
-  .rel.tdata	  : { *(.rel.tdata .rel.tdata.* .rel.gnu.linkonce.td.*) }
-  .rela.tdata	  : { *(.rela.tdata .rela.tdata.* .rela.gnu.linkonce.td.*) }
-  .rel.tbss	  : { *(.rel.tbss .rel.tbss.* .rel.gnu.linkonce.tb.*) }
-  .rela.tbss	  : { *(.rela.tbss .rela.tbss.* .rela.gnu.linkonce.tb.*) }
+  .rel.tdata    : { *(.rel.tdata .rel.tdata.* .rel.gnu.linkonce.td.*) }
+  .rela.tdata   : { *(.rela.tdata .rela.tdata.* .rela.gnu.linkonce.td.*) }
+  .rel.tbss   : { *(.rel.tbss .rel.tbss.* .rel.gnu.linkonce.tb.*) }
+  .rela.tbss    : { *(.rela.tbss .rela.tbss.* .rela.gnu.linkonce.tb.*) }
   .rel.ctors      : { *(.rel.ctors) }
   .rela.ctors     : { *(.rela.ctors) }
   .rel.dtors      : { *(.rel.dtors) }
@@ -108,8 +108,8 @@ SECTIONS
   .eh_frame       : ONLY_IF_RW { KEEP (*(.eh_frame)) }
   .gcc_except_table   : ONLY_IF_RW { *(.gcc_except_table .gcc_except_table.*) }
   /* Thread Local Storage sections  */
-  .tdata	  : { *(.tdata .tdata.* .gnu.linkonce.td.*) }
-  .tbss		  : { *(.tbss .tbss.* .gnu.linkonce.tb.*) *(.tcommon) }
+  .tdata    : { *(.tdata .tdata.* .gnu.linkonce.td.*) }
+  .tbss     : { *(.tbss .tbss.* .gnu.linkonce.tb.*) *(.tcommon) }
   .preinit_array     :
   {
     PROVIDE_HIDDEN (__preinit_array_start = .);

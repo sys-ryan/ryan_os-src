@@ -1,10 +1,9 @@
 /* Default linker script, for normal executables */
 OUTPUT_FORMAT("elf32-i386", "elf32-i386",
-	      "elf32-i386")
+        "elf32-i386")
 OUTPUT_ARCH(i386)
 ENTRY(_start)
-SEARCH_DIR("/usr/local/i386-pc-linux-gnu/lib32"); SEARCH_DIR("/usr/local/x86_64-pc-linux-gnu/lib32"); SEARCH_DIR("/usr/local/lib32"); SEARCH_DIR("/lib32"); SEARCH_DIR("/usr/lib32"); SEARCH_DIR("/usr/local/i386-pc-linux-gnu/lib"); SEARCH_DIR("/usr/local/lib"); SEARCH_DIR("/lib"); SEARCH_DIR("/usr/lib");
-
+SEARCH_DIR("/usr/cross/x86_64-pc-linux/lib");
 SECTIONS
 {
   /* Read-only sections, merged into text segment: */
@@ -17,16 +16,20 @@ SECTIONS
     /* .gnu.warning sections are handled specially by elf32.em.  */
     *(.gnu.warning)
   } =0x90909090
+
   .rodata         : { *(.rodata .rodata.* .gnu.linkonce.r.*) }
   .rodata1        : { *(.rodata1) }
+  
   /* 데이터 영역의 시작을 섹터 단위로 맞춤 */
   . = ALIGN (512);
+
   .data           :
   {
     *(.data .data.* .gnu.linkonce.d.*)
     SORT(CONSTRUCTORS)
   }
   .data1          : { *(.data1) }
+
   __bss_start = .;
   .bss            :
   {
@@ -44,6 +47,7 @@ SECTIONS
   . = ALIGN(32 / 8);
   _end = .; PROVIDE (end = .);
 /*********************************************************************************/
+  
   .interp         : { *(.interp) }
   .note.gnu.build-id : { *(.note.gnu.build-id) }
   .hash           : { *(.hash) }
@@ -65,10 +69,10 @@ SECTIONS
   .rela.data.rel.ro   : { *(.rela.data.rel.ro* .rela.gnu.linkonce.d.rel.ro.*) }
   .rel.data       : { *(.rel.data .rel.data.* .rel.gnu.linkonce.d.*) }
   .rela.data      : { *(.rela.data .rela.data.* .rela.gnu.linkonce.d.*) }
-  .rel.tdata	  : { *(.rel.tdata .rel.tdata.* .rel.gnu.linkonce.td.*) }
-  .rela.tdata	  : { *(.rela.tdata .rela.tdata.* .rela.gnu.linkonce.td.*) }
-  .rel.tbss	  : { *(.rel.tbss .rel.tbss.* .rel.gnu.linkonce.tb.*) }
-  .rela.tbss	  : { *(.rela.tbss .rela.tbss.* .rela.gnu.linkonce.tb.*) }
+  .rel.tdata    : { *(.rel.tdata .rel.tdata.* .rel.gnu.linkonce.td.*) }
+  .rela.tdata   : { *(.rela.tdata .rela.tdata.* .rela.gnu.linkonce.td.*) }
+  .rel.tbss   : { *(.rel.tbss .rel.tbss.* .rel.gnu.linkonce.tb.*) }
+  .rela.tbss    : { *(.rela.tbss .rela.tbss.* .rela.gnu.linkonce.tb.*) }
   .rel.ctors      : { *(.rel.ctors) }
   .rela.ctors     : { *(.rela.ctors) }
   .rel.dtors      : { *(.rel.dtors) }
@@ -91,6 +95,7 @@ SECTIONS
   PROVIDE (__etext = .);
   PROVIDE (_etext = .);
   PROVIDE (etext = .);
+
   .preinit_array     :
   {
     PROVIDE_HIDDEN (__preinit_array_start = .);
@@ -111,12 +116,14 @@ SECTIONS
     KEEP (*(SORT(.fini_array.*)))
     PROVIDE_HIDDEN (__fini_array_end = .);
   }
+  
 /*********************************************************************************/
 /* 섹션 재배치로 인해 이동된 부분 */
   _edata = .; PROVIDE (edata = .);
+
   /* Thread Local Storage sections  */
-  .tdata	  : { *(.tdata .tdata.* .gnu.linkonce.td.*) }
-  .tbss		  : { *(.tbss .tbss.* .gnu.linkonce.tb.*) *(.tcommon) }
+  .tdata    : { *(.tdata .tdata.* .gnu.linkonce.td.*) }
+  .tbss     : { *(.tbss .tbss.* .gnu.linkonce.tb.*) *(.tcommon) }
 /*********************************************************************************/
   .ctors          :
   {
@@ -151,13 +158,15 @@ SECTIONS
   .data.rel.ro : { *(.data.rel.ro.local* .gnu.linkonce.d.rel.ro.local.*) *(.data.rel.ro* .gnu.linkonce.d.rel.ro.*) }
   .dynamic        : { *(.dynamic) }
   .got            : { *(.got) }
+  
   .got.plt        : { *(.got.plt) }
   .eh_frame_hdr : { *(.eh_frame_hdr) }
   .eh_frame       : ONLY_IF_RO { KEEP (*(.eh_frame)) }
   /* Exception handling  */
   .gcc_except_table   : ONLY_IF_RO { *(.gcc_except_table .gcc_except_table.*) }
   .eh_frame       : ONLY_IF_RW { KEEP (*(.eh_frame)) }
-  .gcc_except_table   : ONLY_IF_RW { *(.gcc_except_table .gcc_except_table.*) }
+  .gcc_except_table   : ONLY_IF_RW { *(.gcc_except_table .gcc_except_table.*) }  
+    
   /* Stabs debugging sections.  */
   .stab          0 : { *(.stab) }
   .stabstr       0 : { *(.stabstr) }

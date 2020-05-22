@@ -1,83 +1,87 @@
-#set build environment and rules
+# file		makefile
+# date		2008/12/14
+# author	kkamagui 
+# brief		보호 모드 커널을 빌드하기 위한 make 파일
+
+################################################################################
+# 빌드 환경 및 규칙 설정 
+################################################################################
+# 컴파일러 및 링커 정의
 NASM32 = nasm
 GCC32 = gcc -c -m32 -ffreestanding
 LD32 = ld -melf_i386 -T ../elf_i386.x -nostdlib -e Main -Ttext 0x10200
 
-#dfine OBJETCOPY Option for generating binary file image`
+# 바이너리 이미지 생성을 위한 OBJCOPY 옵션 정의
 OBJCOPY32 = objcopy -j .text -j .data -j .rodata -j .bss -S -O binary
 
-#Define directory
+# 디렉터리 정의
 OBJECTDIRECTORY = Temp
-SOURCEDIRECTORY = Source
+SOURCEDIRECTORY	= Source
 
-
-
-##Set build items and methods
+################################################################################
+# 빌드 항목 및 빌드 방법 설정
+################################################################################
+# 기본적으로 빌드를 수행할 목록
 all: prepare Kernel32.bin
 
-#create directory for object files
+# 오브젝트 파일이 위치할 디렉터리를 생성
 prepare:
 	mkdir -p $(OBJECTDIRECTORY)
 
-#Build kernel Entry point
+# 커널 엔트리 포인트 빌드
 $(OBJECTDIRECTORY)/EntryPoint.bin: $(SOURCEDIRECTORY)/EntryPoint.s
 	$(NASM32) -o $@ $<
 
-#create information on dependency for C source files of Kernel.
+# 커널의 C 소스 파일에 대한 의존성 정보 생성
 dep:
-	@echo === Make Dependency File ===
+	@echo === Make Dependancy File ===
 	make -C $(OBJECTDIRECTORY) -f ../makefile InternalDependency
-	@echo === Dependency Search Complete ===
+	@echo === Dependancy Search Complete ===
 
-#move to object file directory and create a dependency file and executable file
+# 디렉터리를 오브젝트 파일 디렉터리로 이동해서 의존성 파일 및 실행 파일을 생성
 ExecuteInternalBuild: dep
 	make -C $(OBJECTDIRECTORY) -f ../makefile Kernel32.elf
 
-#Covert Kernel image to Binary file
+# 커널 이미지를 바이너리 파일로 변환
 $(OBJECTDIRECTORY)/Kernel32.elf.bin: ExecuteInternalBuild
 	$(OBJCOPY32) $(OBJECTDIRECTORY)/Kernel32.elf $@
 
-
-#Create protected mode binary by joining C entry point and Kernel
+# 엔트리 포인트와 커널을 합쳐서 보호 모드 바이너리 생성
 Kernel32.bin: $(OBJECTDIRECTORY)/EntryPoint.bin $(OBJECTDIRECTORY)/Kernel32.elf.bin
 	cat $^ > $@
-
-#소스 파일을 체외한 나머지 파일 정리
-#clear the remaining files except for source files.
+		
+# 소스 파일을 제외한 나머지 파일 정리	
 clean:
 	rm -f *.bin
 	rm -f $(OBJECTDIRECTORY)/*.*
 
-
-
-
-## The section called again by 'make'. Modifeid based on Temp directory.
-
-#define C source file to build, set Temp directory as base point.
+################################################################################
+# Make에 의해 다시 호출되는 부분, Temp 디렉터리를 기준으로 수행됨
+################################################################################
+# 빌드할 C 소스 파일 정의, Temp 디렉터리를 기준으로 설정
 CENTRYPOINTOBJECTFILE = Main.o
 CSOURCEFILES = $(wildcard ../$(SOURCEDIRECTORY)/*.c)
 ASSEMBLYSOURCEFILES = $(wildcard ../$(SOURCEDIRECTORY)/*.asm)
-COBJECTFIELS = $(subst Main.o, , $(notdir $(patsubst %.c, %.o, $(CSOURCEFILES))))
-ASSEMBLYOBEJCTFIELS = $(notdir $(patsubst %.asm, %.o, $(ASSEMBLYSOURCEFILES)))
+COBJECTFILES = $(subst Main.o, , $(notdir $(patsubst %.c,%.o,$(CSOURCEFILES))))
+ASSEMBLYOBJECTFILES = $(notdir $(patsubst %.asm,%.o,$(ASSEMBLYSOURCEFILES)))
 
-
-#define a rule for converting .c file to .o
+# .c 파일을 .o 파일로 바꾸는 규칙 정의
 %.o: ../$(SOURCEDIRECTORY)/%.c
 	$(GCC32) -c $<
 
-#define a rules for converting .asm file to .o
+# .asm 파일을 .o 파일로 바꾸는 규칙 정의
 %.o: ../$(SOURCEDIRECTORY)/%.asm
 	$(NASM32) -f elf32 -o $@ $<
 
-#Create a file regarding the dependency.
+# 실제 의존성에 관련된 파일을 생성
 InternalDependency:
 	$(GCC32) -MM $(CSOURCEFILES) > Dependency.dep
 
-#Build Kernel image
-Kernel32.elf: $(CENTRYPOINTOBJECTFILE) $(COBJECTFIELS) $(ASSEMBLYOBEJCTFIELS)
+# 실제 커널 이미지를 빌드
+Kernel32.elf: $(CENTRYPOINTOBJECTFILE) $(COBJECTFILES) $(ASSEMBLYOBJECTFILES)
 	$(LD32) -o $@ $^
 
-#If there is a dependency file among the files in the current directory, include it in 'make'
+# 현재 디릭토리의 파일 중, dependency 파일이 있으면 make에 포함	
 ifeq (Dependency.dep, $(wildcard Dependency.dep))
 include Dependency.dep
 endif
