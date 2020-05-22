@@ -615,3 +615,133 @@ IA-32e 모드 커널을 이동시키는 코드 : `kCopyKernel64ImageTo2MB()`
 
 #### Main() 함수 수정
   보호 모드 커널의 C 언어 엔트리 포인트 함수 뛰쪽에 함수 호출 코드를 몇 줄 추가하고, 그 성공 여부를 화면에 표시하기만 하면 됨.
+
+
+
+*** 에러 로그 
+최상위 makefile  의존성 파일 순서 잘못됨. 
+-> 수정 
+
+```
+all: BootLoader Kernel32 Kernel64 Utility Disk.img
+```
+위 순서에 맞게 내용도 수정. (순서)
+
+
+
+
+
+ImageMaker.c:4:10: fatal error: io.h: No such file or directory
+ #include <io.h>
+
+
+해결
+```
+sudo cp /usr/include/x86_64-linux-gnu/sys/io.h /usr/include
+```
+
+
+
+
+
+ImageMaker.c:38:13: error: 'O_BINARY' undeclared (first use in this function)
+             O_BINARY, S_IREAD | S_IWRITE ) ) == -1 )
+
+
+//ImageMaker.c 에서 다음 코드를 수정 
+문제 코드 
+```
+if( ( iTargetFd = open( "Disk.img", O_RDWR | O_CREAT |  O_TRUNC |
+            O_BINARY, S_IREAD | S_IWRITE ) ) == -1 )
+    {
+        fprintf( stderr , "[ERROR] Disk.img open fail.\n" );
+        exit( -1 );
+    }
+```
+
+수정 코드 
+```
+ if( ( iTargetFd = open( "Disk.img", O_RDWR | O_CREAT |  O_TRUNC ,0664 ) ) == -1 )
+    {
+        fprintf( stderr , "[ERROR] Disk.img open fail.\n" );
+        exit( -1 );
+    }
+
+```
+
+
+
+-------
+
+문제 코드
+```
+printf( "[INFO] Copy boot loader to image file\n" );
+if( ( iSourceFd = open( argv[ 1 ], O_RDONLY | O_BINARY ) ) == -1 )
+{   
+    fprintf( stderr, "[ERROR] %s open fail\n", argv[ 1 ] );
+    exit( -1 );
+}
+```
+
+
+
+수정 코드
+```
+printf( "[INFO] Copy protected mode kernel to image file\n" );
+if( ( iSourceFd = open( argv[ 2 ], O_RDONLY ) ) == -1 )
+{
+    fprintf( stderr, "[ERROR] %s open fail\n", argv[ 2 ] );
+    exit( -1 );
+}
+```
+
+
+
+----
+
+
+문제 코드
+```
+printf( "[INFO] Copy protected mode kernel to image file\n" );
+if( ( iSourceFd = open( argv[ 2 ], O_RDONLY | O_BINARY ) ) == -1 )
+{
+    fprintf( stderr, "[ERROR] %s open fail\n", argv[ 2 ] );
+    exit( -1 );
+}
+```
+
+수정 코드
+```
+printf( "[INFO] Copy protected mode kernel to image file\n" );
+if( ( iSourceFd = open( argv[ 2 ], O_RDONLY ) ) == -1 )
+{
+    fprintf( stderr, "[ERROR] %s open fail\n", argv[ 2 ] );
+    exit( -1 );
+}
+```
+
+-----
+
+문제 코드
+```
+printf( "[INFO] Copy IA-32e mode kernel to image file\n" );
+if( ( iSourceFd = open( argv[ 3 ], O_RDONLY | O_BINARY ) ) == -1 )
+{
+    fprintf( stderr, "[ERROR] %s open fail\n", argv[ 3 ] );
+    exit( -1 );
+}
+```
+
+수정 코드
+```
+printf( "[INFO] Copy protected mode kernel to image file\n" );
+if( ( iSourceFd = open( argv[ 2 ], O_RDONLY ) ) == -1 )
+{
+    fprintf( stderr, "[ERROR] %s open fail\n", argv[ 2 ] );
+    exit( -1 );
+}
+```
+
+
+
+

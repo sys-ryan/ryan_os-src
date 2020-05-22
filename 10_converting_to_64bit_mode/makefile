@@ -1,4 +1,4 @@
-all: BootLoader Kernel32 Kernel64 Disk.img Utility
+all: BootLoader Kernel32 Kernel64 Utility Disk.img
 
 # 부트 로더 빌드를 위해 부트 로더 디렉터리에서 make 실행
 BootLoader:
