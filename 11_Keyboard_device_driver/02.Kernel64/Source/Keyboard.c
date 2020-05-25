@@ -18,7 +18,7 @@ BOOL kIsInputBufferFull(void){
 
 BOOL kActivateKeyboard(void){
   int i;
-  int j
+  int j;
 
   //입력 버퍼(포트 0x60)가 비어있으면 키보드 커맨드 전송 가능
   for(i = 0; i < 0xFFFF; i++){
