@@ -83,7 +83,7 @@ BOOL kChangeKeyboardLED(BOOL bCapsLockOn, BOOL bNumLockOn, BOOL bScrollLockOn){
   }
 
   kOutPortByte(0x60, (bCapsLockOn << 2) | (bNumLockOn << 1) | bScrollLockOn);
-  for(i = 0;i i < 0xFFFF; i++){
+  for(i = 0; i < 0xFFFF; i++){
     if(kIsInputBufferFull() == FALSE){
       break;
     }
@@ -300,7 +300,7 @@ BOOL kIsUseCombinedCode(BYTE bScanCode){
       }
   }
   else if((kIsNumberPadScanCode(bDownScanCode) == TRUE) &&
-        (gs_stKeyboardManager.bExtendedCodeIn == FALES)){
+        (gs_stKeyboardManager.bExtendedCodeIn == FALSE)){
           if(gs_stKeyboardManager.bNumLockOn == TRUE){
             bUseCombinedKey = TRUE;
           }
@@ -355,7 +355,7 @@ void UpdateCombinationKeyStatusAndLED(BYTE bScanCode){
 
 
 //Scan code to ASCII code
-BOOL kConvertScanCodeToASCIICode(BYTE bScanCode, BYTE* pbASCIICode, BOOL* bpFlags){
+BOOL kConvertScanCodeToASCIICode(BYTE bScanCode, BYTE* pbASCIICode, BOOL* pbFlags){
   BOOL bUseCombinedKey;
 
   //pause
