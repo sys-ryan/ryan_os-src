@@ -36,7 +36,7 @@ BOOL kActivateKeyboard(void){
       }
     }
     //0xFA == ACK
-    if(kInPortBtyte(0x60) == 0xFA){
+    if(kInPortByte(0x60) == 0xFA){
       return TRUE;
     }
   }
