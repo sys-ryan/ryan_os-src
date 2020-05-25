@@ -691,8 +691,6 @@ while(1){
 - AssemblyUtility.asm  
 - AssemblyUtility.h  
 
-//src 프로젝트에 작성
-
 #### C언어 커널 엔트리 포인트 파일 수정  
 11장에서 추가된 기능을 수행할 수 있도록 키보드 컨트롤러와 키보드를 활성화하고 간단한 셸을 실행.  
 
