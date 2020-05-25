@@ -300,7 +300,7 @@ BOOL kIsUseCombinedCode(BYTE bScanCode){
       }
   }
   else if((kIsNumberPadScanCode(bDownScanCode) == TRUE) &&
-        (gs_stKeyboardManager.bExtendCodeIn == FALES)){
+        (gs_stKeyboardManager.bExtendedCodeIn == FALES)){
           if(gs_stKeyboardManager.bNumLockOn == TRUE){
             bUseCombinedKey = TRUE;
           }
@@ -373,7 +373,7 @@ BOOL kConvertScanCodeToASCIICode(BYTE bScanCode, BYTE* pbASCIICode, BOOL* bpFlag
   }
   //extended key
   else if(bScanCode == 0xE0){
-    gs_stKeyboardManager.bExtendCodeIn = TRUE;
+    gs_stKeyboardManager.bExtendedCodeIn = TRUE;
     return FALSE;
   }
 
@@ -386,9 +386,9 @@ BOOL kConvertScanCodeToASCIICode(BYTE bScanCode, BYTE* pbASCIICode, BOOL* bpFlag
     *pbASCIICode = gs_vstKeyMappingTable[bScanCode & 0x7F].bNormalCode;
   }
 
-  if(gs_stKeyboardManager.bExtendCodeIn == TRUE){
+  if(gs_stKeyboardManager.bExtendedCodeIn == TRUE){
     *pbFlags = KEY_FLAGS_EXTENDEDKEY;
-    gs_stKeyboardManager.bExtendCodeIn = FALSE;
+    gs_stKeyboardManager.bExtendedCodeIn = FALSE;
   }
   else{
     *pbFlags = 0;
