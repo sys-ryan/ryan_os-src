@@ -1,4 +1,5 @@
 #include "Types.h"
+#include "Keyboard.h"
 
 void kPrintString(int iX, int iY, const char* pcString);
 
